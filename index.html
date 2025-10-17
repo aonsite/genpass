@@ -1,11 +1,459 @@
 <!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เครื่องสร้างรหัสผ่าน</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 2.5rem; /* 40px */
+            border-radius: 1rem; /* 16px */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            width: 500px;
+            text-align: center;
+            border: 1px solid #e2e8f0; /* Light border */
+        }
+        .input-group {
+            margin-bottom: 1.5rem; /* 24px */
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem; /* 8px */
+            font-weight: 600;
+            color: #334155; /* Slate 700 */
+        }
+        .input-group input[type="number"],
+        .input-group input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+        .input-group input[type="number"] {
+            width: 100%;
+            padding: 0.75rem 1rem; /* 12px 16px */
+            border: 1px solid #cbd5e1; /* Slate 300 */
+            border-radius: 0.5rem; /* 8px */
+            font-size: 1rem;
+            color: #1e293b; /* Slate 900 */
+            box-sizing: border-box;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem; /* 12px */
+        }
+        .checkbox-group input[type="checkbox"] {
+            appearance: none;
+            width: 1.25rem; /* 20px */
+            height: 1.25rem; /* 20px */
+            border: 2px solid #64748b; /* Slate 500 */
+            border-radius: 0.375rem; /* 6px */
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .checkbox-group input[type="checkbox"]:checked {
+            background-color: #3b82f6; /* Blue 500 */
+            border-color: #3b82f6; /* Blue 500 */
+        }
+        .checkbox-group input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 2px;
+        }
+        .checkbox-group label {
+            margin-left: 0.75rem; /* 12px */
+            font-weight: 500;
+            color: #475569; /* Slate 600 */
+        }
+        .btn-primary {
+            background-color: #3b82f6; /* Blue 500 */
+            color: white;
+            padding: 0.75rem 1.5rem; /* 12px 24px */
+            border-radius: 0.5rem; /* 8px */
+            font-size: 1.125rem; /* 18px */
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            width: 100%;
+            margin-top: 1rem; /* 16px */
+        }
+        .btn-primary:hover {
+            background-color: #2563eb; /* Blue 600 */
+            transform: translateY(-1px);
+        }
+        .password-display {
+            background-color: #e2e8f0; /* Slate 200 */
+            padding: 1rem; /* 16px */
+            border-radius: 0.5rem; /* 8px */
+            margin-top: 2rem; /* 32px */
+            display: flex;
+            flex-direction: column; /* Changed to column for multiple passwords */
+            justify-content: flex-start; /* Align items to the start */
+            align-items: flex-start; /* Align items to the start */
+            word-break: break-all;
+            max-height: 200px; /* Added max-height for scrollability */
+            overflow-y: auto; /* Added scroll for overflow */
+        }
+        .password-item { /* New class for individual passwords */
+            font-size: 1.25rem; /* 20px */
+            font-weight: 500;
+            color: #1e293b; /* Slate 900 */
+            margin-bottom: 0.5rem; /* Spacing between passwords */
+            width: 100%;
+            text-align: left;
+        }
+        .copy-btn {
+            background-color: #10b981; /* Emerald 500 */
+            color: white;
+            padding: 0.6rem 1rem; /* 10px 16px */
+            border-radius: 0.5rem; /* 8px */
+            font-size: 0.9rem; /* 14px */
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            margin-top: 1rem; /* Added margin-top for button below display */
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            width: 100%; /* Make copy button full width */
+        }
+        .copy-btn:hover {
+            background-color: #059669; /* Emerald 600 */
+            transform: translateY(-1px);
+        }
+        .message-box {
+            background-color: #d1fae5; /* Green 100 */
+            color: #065f46; /* Green 800 */
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .message-box.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">เครื่องสร้างรหัสผ่าน</h1>
 
-<html>
-   <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-      <base target="_top">
-   </head>
-   <body>
-      <iframe style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;border: 0;" src="https://gemini.google.com/share/63a5b84fa723"></iframe>
-   </body>
+        <div class="input-group">
+            <label for="passwordLength">ความยาวรหัสผ่าน:</label>
+            <input type="number" id="passwordLength" min="6" max="128" value="12">
+        </div>
+
+        <div class="input-group">
+            <label for="numPasswords">จำนวนรหัสผ่านที่ต้องการสร้าง:</label>
+            <input type="number" id="numPasswords" min="1" max="100" value="1">
+        </div>
+
+        <div class="input-group">
+            <div class="checkbox-group">
+                <input type="checkbox" id="includeUppercase" checked>
+                <label for="includeUppercase">ตัวอักษรพิมพ์ใหญ่ (A-Z)</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="includeLowercase" checked>
+                <label for="includeLowercase">ตัวอักษรพิมพ์เล็ก (a-z)</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="includeNumbers" checked>
+                <label for="includeNumbers">ตัวเลข (0-9)</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="includeSymbols">
+                <label for="includeSymbols">สัญลักษณ์ (!@#$%^&*)</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="beginWithLetter">
+                <label for="beginWithLetter">ขึ้นต้นด้วยตัวอักษร (ไม่ใช้ตัวเลขหรือสัญลักษณ์)</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="noSimilarCharacters">
+                <label for="noSimilarCharacters">ไม่ใช้ตัวอักษรที่คล้ายกัน (i, l, 1, L, o, O, 0)</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="noDuplicateCharacters">
+                <label for="noDuplicateCharacters">ไม่ใช้ตัวอักษรซ้ำกัน</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="noSequentialCharacters">
+                <label for="noSequentialCharacters">ไม่ใช้ตัวอักษรเรียงลำดับ (เช่น abc, 123)</label>
+            </div>
+        </div>
+
+        <button class="btn-primary" onclick="generatePasswords()">สร้างรหัสผ่าน</button>
+
+        <div id="generatedPasswordsContainer" class="password-display">
+            <!-- Generated passwords will be displayed here -->
+        </div>
+
+        <button class="copy-btn" onclick="copyAllPasswords()">คัดลอกรหัสผ่านทั้งหมด</button>
+
+        <div id="messageBox" class="message-box">
+            คัดลอกรหัสผ่านแล้ว!
+        </div>
+    </div>
+
+    <script>
+        // Function to check if a character is a letter
+        function isLetter(char) {
+            return (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z');
+        }
+
+        // Function to check if a character is a number
+        function isNumber(char) {
+            return char >= '0' && char <= '9';
+        }
+
+        // Function to check for sequential characters (e.g., 'abc', '123')
+        function hasSequentialCharacters(str) {
+            if (str.length < 3) return false; // Need at least 3 characters to form a sequence
+            for (let i = 0; i <= str.length - 3; i++) {
+                const char1 = str.charCodeAt(i);
+                const char2 = str.charCodeAt(i + 1);
+                const char3 = str.charCodeAt(i + 2);
+
+                // Check for ascending sequence (e.g., 'abc', '123')
+                if (char2 === char1 + 1 && char3 === char1 + 2) {
+                    // Ensure letters stay within their case and numbers are numbers
+                    if (isLetter(str[i]) && isLetter(str[i+1]) && isLetter(str[i+2])) {
+                        if ((str[i] >= 'a' && str[i] <= 'z' && str[i+1] >= 'a' && str[i+1] <= 'z' && str[i+2] >= 'a' && str[i+2] <= 'z') ||
+                            (str[i] >= 'A' && str[i] <= 'Z' && str[i+1] >= 'A' && str[i+1] <= 'Z' && str[i+2] >= 'A' && str[i+2] <= 'Z')) {
+                            return true;
+                        }
+                    } else if (isNumber(str[i]) && isNumber(str[i+1]) && isNumber(str[i+2])) {
+                        return true;
+                    }
+                }
+                // Check for descending sequence (e.g., 'cba', '321')
+                if (char2 === char1 - 1 && char3 === char1 - 2) {
+                     // Ensure letters stay within their case and numbers are numbers
+                    if (isLetter(str[i]) && isLetter(str[i+1]) && isLetter(str[i+2])) {
+                        if ((str[i] >= 'a' && str[i] <= 'z' && str[i+1] >= 'a' && str[i+1] <= 'z' && str[i+2] >= 'a' && str[i+2] <= 'z') ||
+                            (str[i] >= 'A' && str[i] <= 'Z' && str[i+1] >= 'A' && str[i+1] <= 'Z' && str[i+2] >= 'A' && str[i+2] <= 'Z')) {
+                            return true;
+                        }
+                    } else if (isNumber(str[i]) && isNumber(str[i+1]) && isNumber(str[i+2])) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        // Function to generate a single password with advanced options
+        function generateSinglePassword(options) {
+            const { length, includeUppercase, includeLowercase, includeNumbers, includeSymbols, beginWithLetter, noSimilarCharacters, noDuplicateCharacters, noSequentialCharacters } = options;
+
+            let uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
+            let numberChars = '0123456789';
+            let symbolChars = '!@#$%^&*()_+[]{}|;:,.<>?';
+            const similarChars = 'iIlL1oO0';
+
+            // Filter out similar characters if option is checked
+            if (noSimilarCharacters) {
+                uppercaseChars = uppercaseChars.split('').filter(char => !similarChars.includes(char)).join('');
+                lowercaseChars = lowercaseChars.split('').filter(char => !similarChars.includes(char)).join('');
+                numberChars = numberChars.split('').filter(char => !similarChars.includes(char)).join('');
+                symbolChars = symbolChars.split('').filter(char => !similarChars.includes(char)).join('');
+            }
+
+            let availableChars = '';
+            if (includeUppercase) availableChars += uppercaseChars;
+            if (includeLowercase) availableChars += lowercaseChars;
+            if (includeNumbers) availableChars += numberChars;
+            if (includeSymbols) availableChars += symbolChars;
+
+            // If no character type is selected
+            if (availableChars === '') {
+                return 'โปรดเลือกประเภทตัวอักษรอย่างน้อยหนึ่งประเภท';
+            }
+
+            // If noDuplicateCharacters is checked and length is greater than available unique characters
+            if (noDuplicateCharacters && length > availableChars.length) {
+                return `ความยาวรหัสผ่าน (${length}) มากกว่าจำนวนอักขระที่ไม่ซ้ำกันที่มีอยู่ (${availableChars.length})`;
+            }
+
+            let password = '';
+            let usedCharsInPassword = new Set(); // To track unique characters for noDuplicateCharacters
+
+            for (let i = 0; i < length; i++) {
+                let charToAdd = '';
+                let attempts = 0;
+                const maxAttempts = 100; // Prevent infinite loops for very restrictive settings
+
+                while (attempts < maxAttempts) {
+                    let tempCharsPool = availableChars;
+
+                    // For the first character, if beginWithLetter is checked, ensure it's a letter
+                    if (i === 0 && beginWithLetter) {
+                        let letterPool = '';
+                        if (includeUppercase) letterPool += uppercaseChars;
+                        if (includeLowercase) letterPool += lowercaseChars;
+                        if (letterPool === '') { // If no letters are included but beginWithLetter is checked
+                            return 'ไม่สามารถสร้างรหัสผ่านได้: ต้องมีตัวอักษรเพื่อขึ้นต้นด้วยตัวอักษร';
+                        }
+                        tempCharsPool = letterPool;
+                    }
+
+                    if (tempCharsPool.length === 0) { // No characters available in the pool
+                        // This can happen if, for example, no letters are allowed but beginWithLetter is checked for the first char
+                        return 'ไม่สามารถสร้างรหัสผ่านได้ด้วยเงื่อนไขที่กำหนด (อาจเป็นเพราะข้อจำกัดมากเกินไป)';
+                    }
+
+                    const randomIndex = Math.floor(Math.random() * tempCharsPool.length);
+                    charToAdd = tempCharsPool[randomIndex];
+
+                    let isValidChar = true;
+
+                    // Check for noDuplicateCharacters
+                    if (noDuplicateCharacters && usedCharsInPassword.has(charToAdd)) {
+                        isValidChar = false;
+                    }
+
+                    // Check for noSequentialCharacters
+                    if (noSequentialCharacters && password.length >= 2) {
+                        const tempPasswordSegment = password.slice(-2) + charToAdd; // Check the last 2 existing + new char
+                        if (hasSequentialCharacters(tempPasswordSegment)) {
+                            isValidChar = false;
+                        }
+                    }
+
+                    if (isValidChar) {
+                        password += charToAdd;
+                        if (noDuplicateCharacters) {
+                            usedCharsInPassword.add(charToAdd);
+                        }
+                        break; // Character found and added, move to next position
+                    }
+                    attempts++;
+                }
+
+                if (attempts === maxAttempts) {
+                    // If we couldn't find a valid character after many attempts, return an error
+                    return 'ไม่สามารถสร้างรหัสผ่านได้ด้วยเงื่อนไขที่กำหนด (อาจเป็นเพราะข้อจำกัดมากเกินไป)';
+                }
+            }
+            return password;
+        }
+
+        // Function to generate multiple passwords
+        function generatePasswords() {
+            const options = {
+                length: parseInt(document.getElementById('passwordLength').value),
+                numPasswords: parseInt(document.getElementById('numPasswords').value),
+                includeUppercase: document.getElementById('includeUppercase').checked,
+                includeLowercase: document.getElementById('includeLowercase').checked,
+                includeNumbers: document.getElementById('includeNumbers').checked,
+                includeSymbols: document.getElementById('includeSymbols').checked,
+                beginWithLetter: document.getElementById('beginWithLetter').checked,
+                noSimilarCharacters: document.getElementById('noSimilarCharacters').checked,
+                noDuplicateCharacters: document.getElementById('noDuplicateCharacters').checked,
+                noSequentialCharacters: document.getElementById('noSequentialCharacters').checked
+            };
+
+            const passwordsContainer = document.getElementById('generatedPasswordsContainer');
+            passwordsContainer.innerHTML = ''; // Clear previous passwords
+
+            let hasError = false;
+            let errorMessage = '';
+
+            for (let i = 0; i < options.numPasswords; i++) {
+                const password = generateSinglePassword(options);
+                const passwordItem = document.createElement('div');
+                passwordItem.className = 'password-item';
+                passwordItem.textContent = password;
+                passwordsContainer.appendChild(passwordItem);
+
+                // Check if the generated password is an error message
+                if (password.startsWith('โปรดเลือก') || password.startsWith('ความยาวรหัสผ่าน') || password.startsWith('ไม่สามารถสร้าง')) {
+                    hasError = true;
+                    errorMessage = password; // Store the first error message
+                    break; // Stop generating if an error occurs
+                }
+            }
+
+            // If an error occurred, replace all generated passwords with the error message
+            if (hasError) {
+                passwordsContainer.innerHTML = ''; // Clear all generated passwords
+                const errorItem = document.createElement('div');
+                errorItem.className = 'password-item';
+                errorItem.style.color = 'red'; // Make error message red
+                errorItem.textContent = errorMessage;
+                passwordsContainer.appendChild(errorItem);
+            }
+
+            // Disable/enable copy button based on whether an error occurred
+            document.querySelector('.copy-btn').disabled = hasError;
+        }
+
+        // Function to copy all generated passwords to clipboard
+        function copyAllPasswords() {
+            const passwordsContainer = document.getElementById('generatedPasswordsContainer');
+            const passwordItems = passwordsContainer.querySelectorAll('.password-item');
+            let allPasswordsText = '';
+
+            // Check if there are any valid passwords to copy
+            if (passwordItems.length === 0 || passwordItems[0].textContent.startsWith('โปรดเลือก') || passwordItems[0].textContent.startsWith('ความยาวรหัสผ่าน') || passwordItems[0].textContent.startsWith('ไม่สามารถสร้าง')) {
+                return; // Do nothing if no passwords are generated or it's an error message
+            }
+
+            passwordItems.forEach((item, index) => {
+                allPasswordsText += item.textContent;
+                if (index < passwordItems.length - 1) {
+                    allPasswordsText += '\n'; // Add newline between passwords
+                }
+            });
+
+            // Use document.execCommand('copy') for clipboard operations in iframes
+            const textarea = document.createElement('textarea');
+            textarea.value = allPasswordsText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showMessageBox();
+            } catch (err) {
+                console.error('Failed to copy passwords: ', err);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // Function to show a temporary message box
+        function showMessageBox() {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.classList.add('show');
+            setTimeout(() => {
+                messageBox.classList.remove('show');
+            }, 2000); // Hide after 2 seconds
+        }
+
+        // Generate passwords on initial load
+        window.onload = generatePasswords;
+    </script>
+</body>
 </html>
